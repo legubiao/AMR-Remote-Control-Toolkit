@@ -58,7 +58,7 @@ source ~/.bashrc
 
 Modified the default map folder in `launch/turtlebot.launch`
 
-![image-20240314165341063](assets\image-20240314165341063.png)
+![image-20240314165341063](assets/image-20240314165341063.png)
 
 Launch the demo
 
