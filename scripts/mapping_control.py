@@ -16,7 +16,7 @@ def command_callback(msg):
     global isMapping
     command = msg.data.split()
 
-    if command[0] == "start_mapping":
+    if command[0] == "start":
 
         if isMapping:
             rospy.logwarn("Already in mapping status")
@@ -26,7 +26,7 @@ def command_callback(msg):
             rospy.loginfo("Received command to start mapping")
             isMapping = True
 
-    elif command[0] == "save_map":
+    elif command[0] == "save":
         if isMapping:
             mapPath = foldername+'/'+command[1]
             saveMapCommand = save_map_command.split()
