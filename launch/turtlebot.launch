@@ -1,0 +1,5 @@
+<launch>
+    <include file="$(find amr_platform)/launch/main.launch"/>
+    <include file="$(find turtlebot3_gazebo)/launch/turtlebot3_world.launch"/>
+    <node pkg="amr_platform" type="mapping_control.py" name="mapping_control" output="screen" />
+</launch>
