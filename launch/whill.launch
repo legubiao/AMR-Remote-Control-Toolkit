@@ -1,10 +1,10 @@
 <launch>
     <include file="$(find amr_platform)/launch/main.launch"/>
-    <include file="$(find turtlebot3_gazebo)/launch/turtlebot3_world.launch"/>
+    <include file="$(find ros_whill)/launch/basic.launch"/>
 
     <node pkg="amr_platform" type="mapping_control.py" name="mapping_control" output="screen">
         <param name="foldername" value="/home/biao/maps" />
-        <param name="start_mapping_command" value="roslaunch turtlebot3_slam turtlebot3_slam.launch slam_methods:=gmapping" />
+        <param name="start_mapping_command" value="roslaunch ros_whill slam_gmapping.launch" />
         <param name="save_map_command" value="rosrun map_server map_saver -f" />
     </node>
 </launch>
