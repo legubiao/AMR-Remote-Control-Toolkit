@@ -5,7 +5,7 @@ import subprocess
 from std_msgs.msg import String
 
 def launch_amcl(map_name):
-    amcl_command = "roslaunch amr_platform amcl.launch map_file:=" + foldername+'/'+map_name + ".yaml"
+    amcl_command = "roslaunch " + amcl_launch + " map_file:=" + foldername+'/'+map_name + ".yaml"
     rospy.logwarn(amcl_command)
     process = subprocess.Popen(amcl_command.split())
     return process
@@ -55,6 +55,7 @@ if __name__ == "__main__":
     rospy.init_node("mapping_node")
     
     foldername = rospy.get_param("~foldername", "/path/to/your/folder")
+    amcl_launch = rospy.get_param("~amcl_launch", "amr_platform amcl.launch")
     start_mapping_command = rospy.get_param("~start_mapping_command", "roslaunch turtlebot3_slam turtlebot3_slam.launch slam_methods:=gmapping")
     save_map_command = rospy.get_param("~save_map_command", "rosrun map_server map_saver -f")
     isMapping = False

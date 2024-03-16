@@ -30,15 +30,13 @@ catkin_make
 Install TurtleBot3 Packages
 
 ```shell
-sudo apt install ros-noetic-dynamixel-sdk
-sudo apt install ros-noetic-turtlebot3-msgs
-sudo apt install ros-noetic-turtlebot3
+sudo apt install ros-noetic-dynamixel-sdk ros-noetic-turtlebot3-msgs ros-noetic-turtlebot3
 ```
 
-Install gmapping
+Install gmapping and dwa local planner
 
 ```shell
-sudo apt-get install ros-noetic-gmapping
+sudo apt-get install ros-noetic-gmapping ros-noetic-dwa-local-planner
 ```
 
 Install TurtleBot3 Simulation Package
