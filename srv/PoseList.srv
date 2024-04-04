@@ -1,0 +1,11 @@
+# PoseList.srv
+
+# 请求
+string command # "add", "delete", "get"
+geometry_msgs/PoseStamped pose # 用于添加的位姿
+
+---
+# 响应
+bool success
+string message
+geometry_msgs/PoseStamped[] poses # 获取位姿时返回的位姿列表
