@@ -1,14 +1,21 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 import rospy
 import subprocess
+import os
 from std_msgs.msg import String
+from std_srvs.srv import Trigger, TriggerResponse
 
 def launch_amcl(map_name):
     amcl_command = "roslaunch " + amcl_launch + " map_file:=" + foldername+'/'+map_name + ".yaml"
     rospy.logwarn(amcl_command)
     process = subprocess.Popen(amcl_command.split())
     return process
+
+def handle_get_map_files(req):
+    map_files = [f[:-5] for f in os.listdir(foldername) if f.endswith('.yaml')]
+    return TriggerResponse(True, ','.join(map_files))
 
 def command_callback(msg):
     global mapping_process
@@ -61,4 +68,6 @@ if __name__ == "__main__":
     isMapping = False
 
     rospy.Subscriber("map_command", String, command_callback)
+    rospy.Service('get_map_files', Trigger, handle_get_map_files)
+
     rospy.spin()

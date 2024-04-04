@@ -11,6 +11,8 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
   std_msgs
+  tf
+  geometry_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -107,6 +109,7 @@ catkin_package(
 #  LIBRARIES amr_platform
 #  CATKIN_DEPENDS roscpp rospy std_msgs
 #  DEPENDS system_lib
+CATKIN_DEPENDS roscpp tf geometry_msgs
 )
 
 ###########
@@ -160,10 +163,12 @@ include_directories(
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
 install(PROGRAMS
-  scripts/pose_publisher.py
   scripts/mapping_control.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
+
+add_executable(pose_publisher src/pose_publisher.cpp)
+target_link_libraries(pose_publisher ${catkin_LIBRARIES})
 
 ## Mark executables for installation
 ## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_executables.html
