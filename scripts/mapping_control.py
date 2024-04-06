@@ -22,6 +22,9 @@ def launch_amcl(map_name):
     if map_state == "mapping":
         rospy.logwarn("Terminate SLAM process before launching AMCL")
         mapping_process.terminate()
+    elif map_state == "navigation":
+        rospy.logwarn("Terminate old AMCL process before launching AMCL")
+        amcl_process.terminate()
 
     amcl_command = "roslaunch " + amcl_launch + " map_file:=" + foldername+'/'+map_name + ".yaml"
     rospy.logwarn(amcl_command)
