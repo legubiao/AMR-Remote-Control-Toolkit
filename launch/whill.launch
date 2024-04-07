@@ -6,6 +6,6 @@
         <param name="foldername" value="/home/biao/maps" />
         <param name="start_mapping_command" value="roslaunch ros_whill slam_gmapping.launch" />
         <param name="save_map_command" value="rosrun map_server map_saver -f" />
-        <param name="amcl_launch" value="amr_platform move_base.launch"/>
+        <param name="amcl_launch" value="amr_platform amcl_whill.launch"/>
     </node>
 </launch>
