@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(amr_platform)
+project(amr_rctk)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -13,6 +13,7 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   tf
   geometry_msgs
+  nav_msgs
   message_generation
 )
 
@@ -106,7 +107,6 @@ generate_messages(
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES amr_platform
 #  CATKIN_DEPENDS roscpp rospy std_msgs
 #  DEPENDS system_lib
 CATKIN_DEPENDS roscpp tf geometry_msgs message_runtime
@@ -169,6 +169,9 @@ install(PROGRAMS
 
 add_executable(pose_publisher src/pose_publisher.cpp)
 target_link_libraries(pose_publisher ${catkin_LIBRARIES})
+
+add_executable(odom_transfer src/odom_transfer.cpp)
+target_link_libraries(odom_transfer ${catkin_LIBRARIES})
 
 ## Mark executables for installation
 ## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_executables.html

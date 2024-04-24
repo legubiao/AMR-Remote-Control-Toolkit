@@ -1,0 +1,10 @@
+<launch>
+    <!-- <include file="$(find amr_rctk)/launch/main.launch"/>
+    <include file="$(find ackercito_bringup)/launch/ackercito_bringup.launch"/> -->
+
+    <node pkg="amr_rctk" type="odom_transfer" name="odom_transfer">
+        <remap from="/odom" to="/vins_estimator/odometry"/>
+        <param name="frame1" value="odom" />
+        <param name="frame2" value="base_link" />
+    </node>
+</launch>

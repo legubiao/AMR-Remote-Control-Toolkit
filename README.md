@@ -1,4 +1,4 @@
-# AMR PLATFORM
+# AMR Remote Control Toolkit
 
 By using this package, you can achieve below functions by sending topic for your 2D AMR:
 
@@ -20,7 +20,7 @@ clone the repository
 
 ```shell
 cd ~/catkin_ws/src
-git clone https://github.com/legubiao/amr_platform
+git clone https://github.com/legubiao/AMR-Remote-Control-Toolkit
 cd ..
 catkin_make
 ```
@@ -61,7 +61,7 @@ Modified the default map folder in `launch/turtlebot.launch`
 Launch the demo
 
 ```shell
-roslaunch amr_platform turtlebot.launch
+roslaunch amr_rctk turtlebot.launch
 ```
 
 You can launch gmapping by send to `map_command` topic

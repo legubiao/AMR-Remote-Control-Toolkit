@@ -10,6 +10,8 @@ int main(int argc, char** argv){
   ros::Publisher pose_pub = node.advertise<geometry_msgs::PoseStamped>("/robot_pose", 10);
 
   tf::TransformListener listener;
+  bool print_error;
+  ros::param::get("print_error", print_error);
 
   ros::Rate rate(10.0);
   while (node.ok()){
@@ -19,7 +21,9 @@ int main(int argc, char** argv){
                                ros::Time(0), transform);
     }
     catch (tf::TransformException &ex) {
-      ROS_ERROR("%s",ex.what());
+      if (print_error){
+        ROS_ERROR("%s",ex.what());
+      }
       ros::Duration(1.0).sleep();
       continue;
     }

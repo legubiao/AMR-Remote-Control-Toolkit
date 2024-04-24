@@ -6,7 +6,7 @@ import subprocess
 import os
 from std_msgs.msg import String
 from std_srvs.srv import Trigger, TriggerResponse
-from amr_platform.srv import PoseList, PoseListResponse
+from amr_rctk.srv import PoseList, PoseListResponse
 from geometry_msgs.msg import PoseStamped
 import yaml
 
