@@ -1,4 +1,5 @@
 <launch>
     <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch"/>
     <node pkg="amr_rctk" type="pose_publisher" name="pose_publisher"/>
+    <node pkg="amr_rctk" type="tf_service" name="tf_service"/>
 </launch>

@@ -1,0 +1,4 @@
+string frame1
+string frame2
+---
+geometry_msgs/PoseStamped pose

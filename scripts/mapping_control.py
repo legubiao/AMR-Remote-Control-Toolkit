@@ -35,8 +35,12 @@ def launch_amcl(map_name):
     return process
 
 def handle_get_map_files(req):
-    map_files = [f[:-4] for f in os.listdir(foldername) if f.endswith('.pgm')]
-    return TriggerResponse(True, ','.join(map_files))
+    try:
+        map_files = [f[:-4] for f in os.listdir(foldername) if f.endswith('.pgm')]
+        return TriggerResponse(True, ','.join(map_files))
+    except OSError as e:
+        print(f"Error: {e}")
+        return TriggerResponse(False, str(e))
 
 def map_command_callback(msg):
     global mapping_process

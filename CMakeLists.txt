@@ -61,6 +61,7 @@ find_package(catkin REQUIRED COMPONENTS
 add_service_files(
   FILES
   PoseList.srv
+  TransformFrames.srv
 )
 
 ## Generate actions in the 'action' folder
@@ -73,6 +74,7 @@ add_service_files(
 ## Generate added messages and services with any dependencies listed here
 generate_messages(
   DEPENDENCIES
+  std_msgs
   geometry_msgs
 )
 
@@ -169,6 +171,9 @@ install(PROGRAMS
 
 add_executable(pose_publisher src/pose_publisher.cpp)
 target_link_libraries(pose_publisher ${catkin_LIBRARIES})
+
+add_executable(tf_service src/tf_service.cpp)
+target_link_libraries(tf_service ${catkin_LIBRARIES})
 
 add_executable(odom_transfer src/odom_transfer.cpp)
 target_link_libraries(odom_transfer ${catkin_LIBRARIES})
