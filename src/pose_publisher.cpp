@@ -11,6 +11,7 @@ int main(int argc, char** argv){
 
   tf::TransformListener listener;
   bool print_error;
+  ros::param::param<bool>("print_error", print_error, false);
   ros::param::get("print_error", print_error);
 
   ros::Rate rate(10.0);
