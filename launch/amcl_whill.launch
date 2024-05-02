@@ -5,8 +5,6 @@
         <param name="frame_id" value="map"/>
     </node>
 
-    <arg name="map_file" default="$(find ros_whill)/maps/cartographer.yaml"/>
-
     <arg name="initial_pose_x" default="0.0"/>
     <arg name="initial_pose_y" default="0.0"/>
     <arg name="initial_pose_a" default="0.0"/>

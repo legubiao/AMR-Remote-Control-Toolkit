@@ -3,7 +3,7 @@
     <include file="$(find ros_whill)/launch/basic.launch"/>
 
     <node pkg="amr_rctk" type="mapping_control.py" name="mapping_control" output="screen">
-        <param name="foldername" value="/home/biao/maps" />
+        <param name="foldername" value="$(env HOME)/maps" />
         <param name="start_mapping_command" value="roslaunch ros_whill slam_gmapping.launch" />
         <param name="save_map_command" value="rosrun map_server map_saver -f" />
         <param name="amcl_launch" value="amr_rctk amcl_whill.launch"/>
