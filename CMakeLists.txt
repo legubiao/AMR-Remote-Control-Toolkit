@@ -11,6 +11,14 @@ find_package(rclcpp REQUIRED)
 find_package(tf2_ros REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
+find_package(amr_rctk REQUIRED)
+find_package(nav_msgs REQUIRED)
+find_package(rosidl_default_generators REQUIRED)
+
+rosidl_generate_interfaces(${PROJECT_NAME}
+  "srv/FrameToPose.srv"
+  DEPENDENCIES geometry_msgs
+)
 
 # uncomment the following section in order to fill in
 # further dependencies manually.
@@ -29,7 +37,7 @@ if(BUILD_TESTING)
 endif()
 
 add_executable(pose_publisher src/pose_publisher.cpp)
-ament_target_dependencies(pose_publisher rclcpp tf2_ros geometry_msgs tf2_geometry_msgs)
+ament_target_dependencies(pose_publisher rclcpp tf2_ros nav_msgs geometry_msgs tf2_geometry_msgs amr_rctk)
 
 install(TARGETS
   pose_publisher
