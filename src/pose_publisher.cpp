@@ -1,48 +1,49 @@
-#include <ros/ros.h>
-#include <tf/transform_listener.h>
-#include <geometry_msgs/PoseStamped.h>
+#include <rclcpp/rclcpp.hpp>
+#include <tf2_ros/transform_listener.h>
+#include <geometry_msgs/msg/pose_stamped.hpp>
+#include <tf2/exceptions.h>
+#include <tf2_ros/buffer.h>
+#include <tf2/LinearMath/Transform.h>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
 
 int main(int argc, char** argv){
-  ros::init(argc, argv, "robot_pose_publisher");
+    rclcpp::init(argc, argv);
 
-  ros::NodeHandle node;
+    auto node = std::make_shared<rclcpp::Node>("robot_pose_publisher");
 
-  ros::Publisher pose_pub = node.advertise<geometry_msgs::PoseStamped>("/robot_pose", 10);
+    auto pose_pub = node->create_publisher<geometry_msgs::msg::PoseStamped>("/robot_pose", 10);
 
-  tf::TransformListener listener;
-  bool print_error;
-  ros::param::param<bool>("print_error", print_error, false);
-  ros::param::get("print_error", print_error);
+    tf2_ros::Buffer tfBuffer(node->get_clock());
+    tf2_ros::TransformListener tfListener(tfBuffer);
 
-  ros::Rate rate(10.0);
-  while (node.ok()){
-    tf::StampedTransform transform;
-    try{
-      listener.lookupTransform("/map", "/base_link",  
-                               ros::Time(0), transform);
+    bool print_error = node->declare_parameter<bool>("print_error", false);
+
+    rclcpp::Rate rate(10.0);
+    while (rclcpp::ok()){
+        geometry_msgs::msg::TransformStamped transformStamped;
+        try{
+            transformStamped = tfBuffer.lookupTransform("map", "base_link", tf2::TimePointZero);
+        }
+        catch (tf2::TransformException &ex) {
+            if (print_error){
+                RCLCPP_ERROR(node->get_logger(), "%s", ex.what());
+            }
+            rclcpp::sleep_for(std::chrono::seconds(1));
+            continue;
+        }
+
+        geometry_msgs::msg::PoseStamped pose_msg;
+        pose_msg.header.stamp = node->now();
+        pose_msg.header.frame_id = "map";
+        pose_msg.pose.position.x = transformStamped.transform.translation.x;
+        pose_msg.pose.position.y = transformStamped.transform.translation.y;
+        pose_msg.pose.position.z = transformStamped.transform.translation.z;
+        pose_msg.pose.orientation = transformStamped.transform.rotation;
+
+        pose_pub->publish(pose_msg);
+
+        rate.sleep();
     }
-    catch (tf::TransformException &ex) {
-      if (print_error){
-        ROS_ERROR("%s",ex.what());
-      }
-      ros::Duration(1.0).sleep();
-      continue;
-    }
-
-    geometry_msgs::PoseStamped pose_msg;
-    pose_msg.header.stamp = ros::Time::now();
-    pose_msg.header.frame_id = "map";
-    pose_msg.pose.position.x = transform.getOrigin().x();
-    pose_msg.pose.position.y = transform.getOrigin().y();
-    pose_msg.pose.position.z = transform.getOrigin().z();
-    pose_msg.pose.orientation.x = transform.getRotation().x();
-    pose_msg.pose.orientation.y = transform.getRotation().y();
-    pose_msg.pose.orientation.z = transform.getRotation().z();
-    pose_msg.pose.orientation.w = transform.getRotation().w();
-
-    pose_pub.publish(pose_msg);
-
-    rate.sleep();
-  }
-  return 0;
+    rclcpp::shutdown();
+    return 0;
 };

@@ -13,16 +13,18 @@ It is encouraged to use [legubiao/ros2d-quasar](https://github.com/legubiao/ros2
 install rosbridge-server
 
 ```
-sudo apt-get install ros-noetic-rosbridge-server
+sudo apt-get install ros-humble-rosbridge-server
 ```
 
 clone the repository
 
 ```shell
-cd ~/catkin_ws/src
+cd ~/ros2_ws/src
 git clone https://github.com/legubiao/AMR-Remote-Control-Toolkit
-cd ..
-catkin_make
+cd AMR-Remote-Control-Toolkit
+git checkout humble
+cd ../..
+colcon build
 ```
 
 ## Try with Turtlebot3 Simulation
