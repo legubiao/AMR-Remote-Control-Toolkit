@@ -8,6 +8,8 @@ By using this package, you can achieve below functions by sending topic for your
 
 It is encouraged to use [legubiao/ros2d-quasar](https://github.com/legubiao/ros2d-quasar) as well.
 
+[中文说明](README_CN.md)
+
 ## Installation
 
 install rosbridge-server
