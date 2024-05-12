@@ -5,7 +5,7 @@ options = {
   map_builder = MAP_BUILDER,
   trajectory_builder = TRAJECTORY_BUILDER,
   map_frame = "map",
-  tracking_frame = "base_link",
+  tracking_frame = "base_footprint",
   published_frame = "odom",
   odom_frame = "odom",
   provide_odom_frame = false,
@@ -22,8 +22,8 @@ options = {
   pose_publish_period_sec = 5e-3,
   trajectory_publish_period_sec = 30e-3,
   rangefinder_sampling_ratio = 1.,
-  odometry_sampling_ratio = 1.,
-  fixed_frame_pose_sampling_ratio = 1.,
+  odometry_sampling_ratio = 0.5,
+  fixed_frame_pose_sampling_ratio = 0.9,
   imu_sampling_ratio = 1.,
   landmarks_sampling_ratio = 1.,
 }
@@ -31,13 +31,14 @@ options = {
 MAP_BUILDER.use_trajectory_builder_2d = true
 
 TRAJECTORY_BUILDER_2D.min_range = 0.12
-TRAJECTORY_BUILDER_2D.max_range = 3.5
+TRAJECTORY_BUILDER_2D.max_range = 5.0
 TRAJECTORY_BUILDER_2D.missing_data_ray_length = 3.
 TRAJECTORY_BUILDER_2D.use_imu_data = false
 TRAJECTORY_BUILDER_2D.use_online_correlative_scan_matching = true 
 TRAJECTORY_BUILDER_2D.motion_filter.max_angle_radians = math.rad(0.1)
 
-POSE_GRAPH.optimize_every_n_nodes = 90 -- 每90个节点进行一次优化，这也是启动回环检测的触发条件
+
+POSE_GRAPH.optimize_every_n_nodes = 40 -- 每90个节点进行一次优化，这也是启动回环检测的触发条件
 POSE_GRAPH.constraint_builder.sampling_ratio = 0.3 -- 用于回环检测的节点的采样比率
 POSE_GRAPH.constraint_builder.min_score = 0.65 -- 用于接受约束的最小分数
 POSE_GRAPH.constraint_builder.global_localization_min_score = 0.7 -- 用于全局定位的最小分数
@@ -55,4 +56,5 @@ POSE_GRAPH.optimization_problem.odometry_rotation_weight = 1e5 -- 里程计的�
 POSE_GRAPH.optimization_problem.fixed_frame_pose_translation_weight = 1e1 -- 固定帧姿态的平移权重
 POSE_GRAPH.optimization_problem.fixed_frame_pose_rotation_weight = 1e2 -- 固定帧姿态的旋转权重
 POSE_GRAPH.optimization_problem.log_solver_summary = false -- 是否记录求解器摘要
+
 return options

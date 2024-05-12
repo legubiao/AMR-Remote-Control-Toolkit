@@ -60,8 +60,9 @@ def generate_launch_description():
             output='screen',
             parameters=[{'use_sim_time': use_sim_time}],
             arguments=['-configuration_directory', cartographer_config_dir,
-                       '-configuration_basename', configuration_basename]
-            ),
+                       '-configuration_basename', configuration_basename],
+            remappings=[('/points2', '/scan/point_cloud')]
+        ),
                     
 
         DeclareLaunchArgument(
@@ -87,6 +88,6 @@ def generate_launch_description():
             executable='rviz2',
             name='rviz2',
             arguments=['-d', rviz_config_dir],
-            parameters=[{'use_sim_time': use_sim_time}],
-            output='screen'),
+            parameters=[{'use_sim_time': use_sim_time}]
+            ),
     ])

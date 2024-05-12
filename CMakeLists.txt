@@ -8,15 +8,17 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(rclpy REQUIRED)
 find_package(tf2_ros REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
-find_package(amr_rctk REQUIRED)
 find_package(nav_msgs REQUIRED)
+find_package(std_srvs REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
   "srv/FrameToPose.srv"
+  "srv/PoseList.srv"
   DEPENDENCIES geometry_msgs
 )
 
@@ -37,12 +39,19 @@ if(BUILD_TESTING)
 endif()
 
 add_executable(pose_publisher src/pose_publisher.cpp)
-ament_target_dependencies(pose_publisher rclcpp tf2_ros nav_msgs geometry_msgs tf2_geometry_msgs amr_rctk)
+ament_target_dependencies(pose_publisher rclcpp tf2_ros nav_msgs geometry_msgs tf2_geometry_msgs)
+
+rosidl_get_typesupport_target(cpp_typesupport_library ${PROJECT_NAME} "rosidl_typesupport_cpp")
+target_link_libraries(pose_publisher ${cpp_typesupport_library})
 
 install(TARGETS
   pose_publisher
   DESTINATION lib/${PROJECT_NAME})
 
+install(PROGRAMS
+  scripts/mapping_node.py
+  DESTINATION lib/${PROJECT_NAME}
+)
 
 install(DIRECTORY
   launch
