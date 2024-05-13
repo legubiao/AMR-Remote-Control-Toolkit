@@ -26,15 +26,15 @@ sudo apt-get install ros-humble-rosbridge-server
 安装Cartographer
 
 ```
-$ sudo apt install ros-humble-cartographer
-$ sudo apt install ros-humble-cartographer-ros
+sudo apt install ros-humble-cartographer
+sudo apt install ros-humble-cartographer-ros
 ```
 
 安装Navigation2
 
 ```
-$ sudo apt install ros-humble-navigation2
-$ sudo apt install ros-humble-nav2-bringup
+sudo apt install ros-humble-navigation2
+sudo apt install ros-humble-nav2-bringup
 ```
 
 
