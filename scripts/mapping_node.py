@@ -46,10 +46,10 @@ class MappingNode(Node):
     def launch_navigation(self, map_name):
         if self.map_state == "mapping":
             self.get_logger().warn("Terminate SLAM process before launching Navigation")
-            os.kill(self.mapping_process.pid, signal.SIGINT)
+            self.wait_for_terminate(self.mapping_process, False)
         elif self.map_state == "navigation":
             self.get_logger().warn("Terminate old Navigation process before launching Navigation")
-            os.kill(self.navigation_process.pid, signal.SIGKILL)
+            self.wait_for_terminate(self.navigation_process, False)
 
         command = "ros2 launch " + self.navigation_command + " map:=" + self.foldername +'/'+ map_name + ".yaml"
         self.get_logger().info("Launch Navigation process with command: " + command)
@@ -71,7 +71,7 @@ class MappingNode(Node):
             self.get_logger().info("Received command to start mapping")
             if self.map_state == "navigation":
                 self.get_logger().warn("Terminate Navigation process before mapping")
-                os.kill(self.navigation_process.pid, signal.SIGKILL)
+                self.wait_for_terminate(self.navigation_process, False)
 
             # 启动SLAM建图
             t = threading.Thread(target=self.launch_mapping)
@@ -80,14 +80,12 @@ class MappingNode(Node):
         elif command[0] == "stop":
             if self.map_state == "mapping":
                 self.get_logger().info("Received command to stop mapping")
-                os.kill(self.mapping_process.pid, signal.SIGINT)
-                self.map_state = "idle"
-                self.publish_map_state()
+                self.wait_for_terminate(self.mapping_process)
+                self.get_logger().warn("Mapping process terminated cleanly")
             elif self.map_state == "navigation":
-                self.get_logger().warn("Terminate Navigation process before stopping mapping")
-                os.kill(self.navigation_process.pid, signal.SIGKILL)
-                self.map_state = "idle"
-                self.publish_map_state()
+                self.get_logger().warn("Received command to stop navigation")
+                self.wait_for_terminate(self.navigation_process)
+                self.get_logger().warn("Navigation process terminated cleanly")
             else:
                 self.get_logger().warn("Already Idle")
         elif command[0] == "save":
@@ -111,6 +109,15 @@ class MappingNode(Node):
             t = threading.Thread(target=self.launch_navigation(command[1]))
             t.start()
     
+    def wait_for_terminate(self, process, publish=True):
+        os.kill(process.pid, signal.SIGINT)
+        self.map_state = "terminating"
+        self.publish_map_state()
+        os.waitpid(process.pid, 0)
+        if (publish):
+            self.map_state = "idle"
+            self.publish_map_state()
+
     def handle_get_map_files(self, request, response):
         try:
             map_files = [f[:-4] for f in os.listdir(self.foldername) if f.endswith('.pgm')]
@@ -126,7 +133,7 @@ class MappingNode(Node):
         if self.map_state == "mapping":
             os.kill(self.mapping_process.pid, signal.SIGINT)
         elif self.map_state == "navigation":
-            os.kill(self.navigation_process.pid, signal.SIGKILL)
+            os.kill(self.navigation_process.pid, signal.SIGINT)
     
 def main(args=None):
     rclpy.init(args=args)
@@ -136,11 +143,15 @@ def main(args=None):
     try:
         rclpy.spin(node)
     except KeyboardInterrupt:
-        print('Shutting down')
+        if node.map_state == "mapping":
+            node.get_logger().info('Interrupted by user, shutting down mapping process')
+        elif node.map_state == "navigation":
+            node.get_logger().info('Interrupted by user, shutting down navigation process')
         node.on_shutdown()
     finally:
-        node.destroy_node()
-        rclpy.shutdown()
+        if rclpy.ok():  # 检查ROS2的上下文是否已经关闭
+            node.destroy_node()
+            rclpy.shutdown()
 
 if __name__ == "__main__":
     main()
