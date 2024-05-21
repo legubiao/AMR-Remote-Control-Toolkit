@@ -16,6 +16,11 @@ install rosbridge-server
 sudo apt-get install ros-noetic-rosbridge-server
 ```
 
+pip install (for conda user)
+```bash
+pip install twisted pyOpenSSL autobahn service_identity tornado pymongo pillow
+```
+
 clone the repository
 
 ```shell

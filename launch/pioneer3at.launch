@@ -1,0 +1,11 @@
+<launch>
+    <include file="$(find amr_rctk)/launch/main.launch"/>
+    <include file="$(find webots_ros)/launch/pioneer3at.launch"/>
+
+    <node pkg="amr_rctk" type="mapping_control.py" name="mapping_control" output="screen">
+        <param name="foldername" value="$(env HOME)/maps" />
+        <param name="start_mapping_command" value="roslaunch turtlebot3_slam turtlebot3_slam.launch slam_methods:=gmapping" />
+        <param name="save_map_command" value="rosrun map_server map_saver -f" />
+        <param name="amcl_launch" value="turtlebot3_navigation turtlebot3_navigation.launch"/>
+    </node>
+</launch>
