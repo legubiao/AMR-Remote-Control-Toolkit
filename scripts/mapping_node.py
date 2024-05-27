@@ -11,6 +11,7 @@ from std_srvs.srv import Trigger
 from amr_rctk.srv import PoseList
 from geometry_msgs.msg import PoseStamped
 import yaml
+import psutil
 
 class MappingNode(Node):
     def __init__(self):
@@ -110,10 +111,13 @@ class MappingNode(Node):
             t.start()
     
     def wait_for_terminate(self, process, publish=True):
-        os.kill(process.pid, signal.SIGINT)
+        parent = psutil.Process(process.pid)
+        for child in parent.children(recursive=True):  # or parent.children() for recursive=False
+            child.kill()
+        process.terminate()
         self.map_state = "terminating"
         self.publish_map_state()
-        os.waitpid(process.pid, 0)
+        process.wait()
         if (publish):
             self.map_state = "idle"
             self.publish_map_state()
