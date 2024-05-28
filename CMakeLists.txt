@@ -37,15 +37,44 @@ if(BUILD_TESTING)
   set(ament_cmake_cpplint_FOUND TRUE)
   ament_lint_auto_find_test_dependencies()
 endif()
+include_directories(include)
 
 add_executable(pose_publisher src/pose_publisher.cpp)
-ament_target_dependencies(pose_publisher rclcpp tf2_ros nav_msgs geometry_msgs tf2_geometry_msgs)
+ament_target_dependencies(pose_publisher
+        rclcpp
+        tf2_ros
+        nav_msgs
+        geometry_msgs
+        tf2_geometry_msgs
+)
+
+add_executable(path_publisher src/path_publisher.cpp)
+ament_target_dependencies(path_publisher
+        rclcpp
+        tf2_ros
+        nav_msgs
+        geometry_msgs
+        tf2_geometry_msgs
+)
+
+add_executable(path_tracker_pid src/path_tracker_pid.cpp)
+ament_target_dependencies(path_tracker_pid
+        rclcpp
+        tf2_ros
+        nav_msgs
+        geometry_msgs
+        tf2_geometry_msgs
+)
 
 rosidl_get_typesupport_target(cpp_typesupport_library ${PROJECT_NAME} "rosidl_typesupport_cpp")
 target_link_libraries(pose_publisher ${cpp_typesupport_library})
+target_link_libraries(path_publisher ${cpp_typesupport_library})
+target_link_libraries(path_tracker_pid ${cpp_typesupport_library})
 
 install(TARGETS
-  pose_publisher
+        pose_publisher
+        path_publisher
+        path_tracker_pid
   DESTINATION lib/${PROJECT_NAME})
 
 install(PROGRAMS

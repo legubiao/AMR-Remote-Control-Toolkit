@@ -3,16 +3,15 @@
 #include <geometry_msgs/msg/pose_stamped.hpp>
 #include <tf2/exceptions.h>
 #include <tf2_ros/buffer.h>
-#include <tf2/LinearMath/Transform.h>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
 #include <deque>
 #include <nav_msgs/msg/path.hpp>
 #include <amr_rctk/srv/frame_to_pose.hpp>
 
 bool handle_frame_to_pose_request(
-    const std::shared_ptr<amr_rctk::srv::FrameToPose::Request> request,
-    std::shared_ptr<amr_rctk::srv::FrameToPose::Response> response,
-    tf2_ros::Buffer& tfBuffer,
+    const std::shared_ptr<amr_rctk::srv::FrameToPose::Request>& request,
+    const std::shared_ptr<amr_rctk::srv::FrameToPose::Response>& response,
+    const tf2_ros::Buffer& tfBuffer,
     const rclcpp::Node::SharedPtr& node)
 {
     geometry_msgs::msg::TransformStamped transformStamped;
@@ -58,8 +57,8 @@ int main(int argc, char** argv){
 
     rclcpp::Rate rate(10.0);
     while (rclcpp::ok()){
-        geometry_msgs::msg::TransformStamped transformStamped;
         try{
+            geometry_msgs::msg::TransformStamped transformStamped;
             transformStamped = tfBuffer.lookupTransform("map", "base_link", tf2::TimePointZero);
             geometry_msgs::msg::PoseStamped pose_msg;
             pose_msg.header.stamp = node->now();
@@ -90,7 +89,7 @@ int main(int argc, char** argv){
             }
         }
 
-        rclcpp::spin_some(node);
+        spin_some(node);
         rate.sleep();
     }
     rclcpp::shutdown();

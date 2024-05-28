@@ -13,17 +13,17 @@ def generate_launch_description():
             default_value='true',
             description='Use simulation (Gazebo) clock if true'),
         Node(
-            package='rosbridge_server',
-            executable='rosbridge_websocket',
-            name='rosbridge_websocket',
-            output='screen',
-            parameters=[{'use_sim_time': use_sim_time}]
+            package='amr_rctk',
+            parameters=[{'use_sim_time': use_sim_time}],
+            executable='path_publisher',
+            name='path_publisher',
+            namespace='amr_rctk'
         ),
         Node(
             package='amr_rctk',
             parameters=[{'use_sim_time': use_sim_time}],
-            executable='pose_publisher',
-            name='pose_publisher',
+            executable='path_tracker_pid',
+            name='path_tracker_pid',
             namespace='amr_rctk'
         )
     ])

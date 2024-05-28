@@ -34,7 +34,7 @@ def generate_launch_description():
             'map',
             'map.yaml'))
 
-    param_file_name = 'turtlebot3_burger.yaml'
+    param_file_name = 'nav_turtlebot3_burger.yaml'
     param_dir = LaunchConfiguration(
         'params_file',
         default=os.path.join(
