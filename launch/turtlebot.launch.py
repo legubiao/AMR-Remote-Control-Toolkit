@@ -13,6 +13,7 @@ foldername = os.path.join(home_dir, "maps")
 if not os.path.exists(foldername):
     os.makedirs(foldername)
 
+
 def generate_launch_description():
     webots_ros2_turtlebot_dir = get_package_share_directory('webots_ros2_turtlebot')
     use_sim_time = LaunchConfiguration('use_sim_time', default='true')
@@ -38,7 +39,7 @@ def generate_launch_description():
             PythonLaunchDescriptionSource([ThisLaunchFileDir(), '/main.launch.py']),
             launch_arguments={'use_sim_time': 'true'}.items(),
         ),
-        
+
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource([webots_ros2_turtlebot_dir, '/launch/robot_launch.py']),
             launch_arguments={'use_sim_time': 'true'}.items(),
