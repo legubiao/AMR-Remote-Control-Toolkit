@@ -146,7 +146,7 @@ namespace amr_rctk {
 int main(const int argc, char *argv[]) {
     rclcpp::init(argc, argv);
     const auto node = std::make_shared<amr_rctk::PathPublisher>();
-    rclcpp::spin(node);
+    spin(node);
     rclcpp::shutdown();
     return 0;
 }
