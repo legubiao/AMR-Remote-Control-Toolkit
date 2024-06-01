@@ -20,6 +20,16 @@ def generate_launch_description():
             parameters=[{'use_sim_time': use_sim_time}]
         ),
         Node(
+            package='rosapi',
+            parameters=[
+                {'use_sim_time': use_sim_time},
+                {'params_glob': "[*]"}
+            ],
+            executable='rosapi_node',
+            name='rosapi',
+        ),
+
+        Node(
             package='amr_rctk',
             parameters=[{'use_sim_time': use_sim_time}],
             executable='pose_publisher',

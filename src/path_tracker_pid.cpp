@@ -20,7 +20,7 @@ namespace amr_rctk {
         sub_local_path_ = create_subscription<nav_msgs::msg::Path>(
             "local_path", 10, std::bind(&PathTrackerPID::localPathCallback, this, std::placeholders::_1));
         pub_cmd_vel_ = create_publisher<geometry_msgs::msg::Twist>("/cmd_vel", 10);
-        pid_ = control::PID(0.1, 1.0, -1.0, PID_Kp, PID_Ki, PID_Kd);
+        pid_ = control::PID(0.1, 0.5, -0.5, PID_Kp, PID_Ki, PID_Kd);
 
         callback_handle_ = add_on_set_parameters_callback(
             std::bind(&PathTrackerPID::parametersCallback, this, std::placeholders::_1));

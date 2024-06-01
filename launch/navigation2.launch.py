@@ -30,7 +30,7 @@ def generate_launch_description():
     map_dir = LaunchConfiguration(
         'map',
         default=os.path.join(
-            get_package_share_directory('turtlebot3_navigation2'),
+            get_package_share_directory('amr_rctk'),
             'map',
             'map.yaml'))
 
